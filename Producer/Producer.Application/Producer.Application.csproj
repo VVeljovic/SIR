@@ -1,17 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="14.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.1.1" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1" />
+		<PackageReference Include="MassTransit" Version="8.1.1" />
+		<PackageReference Include="MediatR" Version="14.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Npgsql" Version="8.0.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\Producer.Domain\Producer.Domain.csproj" />
-  </ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Producer.Domain\Producer.Domain.csproj" />
+	</ItemGroup>
 
 </Project>
