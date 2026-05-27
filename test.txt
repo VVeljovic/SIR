@@ -1,0 +1,65 @@
+●─Evo kompletne analize─projekta:
+
+  ---
+  Arhitektura
+
+  Projekat koristi Clean Architecture sa 4 sloja (.NET 8, PostgreSQL, RabbitMQ via MassTransit, CsvHelper). Osnovna struktura je dobra — MediatR, async streaming, outbox pattern su dobri izbori.
+
+  ---
+  Kritični problemi (odmah popraviti)
+
+  1. Hardkodovane kredencijale i connection stringovi
+
+  Infrastructure/DependencyInjection.cs direktno u kodu ima:
+  - PostgreSQL: Host=localhost;Port=5433;Database=mydb;Username=postgres;Password=postgres
+  - RabbitMQ: user/password
+
+  Treba premestiti u appsettings.json + environment varijable.
+
+  2. Nema exception handlinga
+
+  FileController.Process() nema try-catch — svaka greška vraća 500 bez ikakve poruke. Treba dodati global exception middleware.
+
+  3. Nema validacije inputa
+
+  FilePath parametar se ne validira — može biti null, prazan string, ili path traversal napad (../../etc/passwd).
+
+  4. CancellationToken se ne propagira
+
+  MessageSender.SendAsync() prima token ali ga ne prosleđuje MassTransit pozivu.
+
+  5. Hardkodovano ime queue-a
+
+  "queue:testqueue" u MessageSender.cs — treba biti konfigurabilno.
+
+  ---
+  Srednji prioritet
+
+  ┌───────────────────────────────────────────────────────┬───────────────────────────┐
+  │                        Problem                        │         Lokacija          │
+  ├───────────────────────────────────────────────────────┼───────────────────────────┤
+  │ FileController vraća prazan Ok() bez ikakvog odgovora │ FileController.cs         │
+  ├───────────────────────────────────────────────────────┼───────────────────────────┤
+  │ Nema logovanja grešaka, samo uspešnih rekorda         │ ReadFileCommandHandler.cs │
+  ├───────────────────────────────────────────────────────┼───────────────────────────┤
+  │ Nema health check endpointa (/health)                 │ Nedostaje                 │
+  ├───────────────────────────────────────────────────────┼───────────────────────────┤
+  │ Nema unit testova                                     │ Nema test projekta        │
+  ├───────────────────────────────────────────────────────┼───────────────────────────┤
+  │ Nema globalnog exception middleware-a                 │ Program.cs                │
+  └───────────────────────────────────────────────────────┴───────────────────────────┘
+
+  ---
+  Šta bih preporučio da uradimo
+
+  Kojim redom da krenemo?
+
+  1. Konfiguracija — izvući connection stringove u appsettings.json
+  2. Validacija + exception handling — middleware + FluentValidation na command
+  3. CancellationToken fix — trivijalna izmena
+  4. Health checks — dodati /health endpoint
+  5. Unit testovi — test projekat sa xUnit + Moq
+
+  Reci mi šta te najviše interesuje ili gde da počnemo, pa ću implementirati.
+
+✻ Churned for 1m 25s
