@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Producer.Application.Abstractions;
 using Producer.Infrastructure.Data;
@@ -9,13 +10,13 @@ namespace Producer.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IFileReaderService, FileReaderService>();
 
             services.AddDbContext<ApplicationDbContext>(cfg =>
             {
-                cfg.UseNpgsql("Host=localhost;Port=5433;Database=mydb;Username=postgres;Password=postgres");
+                cfg.UseNpgsql(configuration.GetConnectionString("Database"));
             }
             );
 
@@ -30,10 +31,10 @@ namespace Producer.Infrastructure
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost", "/", host =>
+                    cfg.Host(configuration["RabbitMQ:Host"], configuration["RabbitMQ:VirtualHost"], host =>
                     {
-                        host.Username("user");
-                        host.Password("password");
+                        host.Username(configuration["RabbitMQ:Username"]);
+                        host.Password(configuration["RabbitMQ:Password"]);
                     });
 
                 });

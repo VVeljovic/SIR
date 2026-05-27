@@ -9,7 +9,6 @@ namespace Producer.Application
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ReadFileCommandHandler).Assembly));
 
-
             return services;
         }
     }

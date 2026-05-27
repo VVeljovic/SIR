@@ -1,5 +1,6 @@
 using Producer.Application;
 using Producer.Infrastructure;
+using Producer.Presentation.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
