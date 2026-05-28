@@ -13,6 +13,7 @@ namespace Producer.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IFileReaderService, FileReaderService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<ApplicationDbContext>(cfg =>
             {
@@ -24,9 +25,9 @@ namespace Producer.Infrastructure
             {
                 x.AddEntityFrameworkOutbox<ApplicationDbContext>(cfg =>
                 {
-                    cfg.UsePostgres();
+                    cfg.QueryDelay = TimeSpan.FromSeconds(1);   
+                    cfg.UsePostgres().UseBusOutbox();
 
-                    cfg.UseBusOutbox();
                 });
 
                 x.UsingRabbitMq((context, cfg) =>
@@ -37,6 +38,7 @@ namespace Producer.Infrastructure
                         host.Password(configuration["RabbitMQ:Password"]);
                     });
 
+                    cfg.ConfigureEndpoints(context);
                 });
             });
 

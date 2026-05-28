@@ -6,7 +6,8 @@ namespace Producer.Application.Commands
 {
     public sealed class ReadFileCommandHandler(IFileReaderService fileReaderService,
         IMessageSender sender,
-        ILogger<ReadFileCommandHandler> logger) : IRequestHandler<ReadFileCommand>
+        ILogger<ReadFileCommandHandler> logger,
+        IUnitOfWork unitOfWork) : IRequestHandler<ReadFileCommand>
     {
         public async Task Handle(ReadFileCommand request, CancellationToken cancellationToken)
         {
@@ -21,6 +22,8 @@ namespace Producer.Application.Commands
                 record.Severity,
                 record.City,
                 record.State);
+
+                await unitOfWork.SaveChangesAsync(cancellationToken);
             }
         }
     }

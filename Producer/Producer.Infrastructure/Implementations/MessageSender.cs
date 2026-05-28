@@ -8,9 +8,9 @@ namespace Producer.Infrastructure.Implementations
     {
         public async Task SendAsync(AccidentRecord record, CancellationToken cancellationToken)
         {
-            var endpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:testqueue"));
+            var endpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:nov"));
 
-            await endpoint.Send(record);
+            await endpoint.Send(record, cancellationToken);
         }
     }
 }

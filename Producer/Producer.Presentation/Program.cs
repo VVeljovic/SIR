@@ -1,9 +1,17 @@
 using Producer.Application;
 using Producer.Infrastructure;
 using Producer.Presentation.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((context, services, config) =>
+{
+    config.WriteTo.Seq("http://localhost:5341")
+    .WriteTo.Console()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning);
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -12,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
