@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
 using Producer.Domain.Entities;
 
-namespace Producer.Infrastructure.Mappings
+namespace Producer.Application.Mappings
 {
     public class AccidentRecordMap : ClassMap<AccidentRecord>
     {

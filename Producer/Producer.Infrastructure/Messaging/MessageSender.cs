@@ -2,7 +2,7 @@
 using Producer.Application.Abstractions;
 using Producer.Domain.Entities;
 
-namespace Producer.Infrastructure.Implementations
+namespace Producer.Infrastructure.Messaging
 {
     public sealed class MessageSender(ISendEndpointProvider sendEndpointProvider) : IMessageSender
     {

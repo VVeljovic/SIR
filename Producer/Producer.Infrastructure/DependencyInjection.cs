@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Producer.Application.Abstractions;
-using Producer.Infrastructure.Implementations;
+using Producer.Application.Implementations;
+using Producer.Infrastructure.BackgorundServices;
+using Producer.Infrastructure.Messaging;
 
 namespace Producer.Infrastructure
 {
@@ -10,7 +12,7 @@ namespace Producer.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IFileReaderService, FileReaderService>();
+            services.AddScoped<IAccidentStreamService, AccidentStreamService>();
 
             services.AddMassTransit(x =>
             {
@@ -27,7 +29,7 @@ namespace Producer.Infrastructure
             });
 
             services.AddScoped<IMessageSender, MessageSender>();
-
+            services.AddHostedService<ProducerBackgroundService>();
             return services;
         }
     }
