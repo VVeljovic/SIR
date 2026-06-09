@@ -10,7 +10,7 @@ services:
       - "5672:5672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-    network:
+    networks:
       - sir_net
   
   db:
@@ -23,7 +23,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-    newtorks:
+    networks:
       - sir_net
 
   pgadmin:
@@ -61,4 +61,4 @@ volumes:
   pgadmin_data:
   seq_data:
 networks:
-  sir_net
+  sir_net:

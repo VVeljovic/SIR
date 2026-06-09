@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-deployment
+  labels:
+    app: producer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producerapp
+  template:
+    metadata:
+      labels:
+        app: producerapp
+    spec:
+      containers:
+        - name: producerapp
+          image: producer:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+          - name: RabbitMQ__Host
+            valueFrom: 
+              configMapKeyRef:
+                name: producer-config-map
+                key: rabbitmq_host
+          - name: Seq__Url
+            valueFrom:
+              configMapKeyRef:
+                name: producer-config-map
+                key: seq_host
+          - name: RabbitMQ__Username
+            valueFrom:
+              secretKeyRef:
+                name: producer-secret
+                key: RabbitMQ__Username
+          - name: RabbitMQ__Password
+            valueFrom:
+              secretKeyRef:
+                name: producer-secret
+                key: RabbitMQ__Password
+          - name: FilePath
+            valueFrom:
+              configMapKeyRef:
+                name: producer-config-map
+                key: file_path
