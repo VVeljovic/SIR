@@ -6,15 +6,14 @@ namespace Producer.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FileController(ISender sender, IConfiguration configuration) : ControllerBase
+    public class ProduceController(ISender sender, IConfiguration configuration) : ControllerBase
     {
-
-        [HttpPost("process")]
-        public async Task<IActionResult> Process()
+        [HttpPost("produce")]
+        public async Task<IActionResult> Produce(CancellationToken cancellationToken)
         {
             var command = new ReadFileCommand(configuration["FilePath"]!);
-            
-            await sender.Send(command);
+
+            await sender.Send(command, cancellationToken);
 
             return Ok();
         }

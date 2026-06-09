@@ -6,7 +6,7 @@ using Serilog;
 var builder = Host.CreateApplicationBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Seq("http://localhost:5341/")
+    .WriteTo.Seq(builder.Configuration["Seq:Url"] ?? "http://localhost:5341/")
     .WriteTo.Console()
     .MinimumLevel.Information()
     .MinimumLevel.Override("MassTransit", Serilog.Events.LogEventLevel.Warning)
@@ -31,10 +31,13 @@ builder.Services.AddMassTransit(x =>
     });
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        var rabbitHost = builder.Configuration["RabbitMq:Host"] ?? "localhost";
+        var rabbitUser = builder.Configuration["RabbitMq:Username"] ?? "user";
+        var rabbitPass = builder.Configuration["RabbitMq:Password"] ?? "password";
+        cfg.Host(rabbitHost, "/", h =>
         {
-            h.Username("user");
-            h.Password("password");
+            h.Username(rabbitUser);
+            h.Password(rabbitPass);
         });
 
         cfg.ReceiveEndpoint("nov", x =>
