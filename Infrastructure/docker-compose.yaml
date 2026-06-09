@@ -10,6 +10,8 @@ services:
       - "5672:5672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    network:
+      - sir_net
   
   db:
     image: postgres:15-alpine
@@ -21,6 +23,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    newtorks:
+      - sir_net
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -35,6 +39,8 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - db
+    networks:
+      - sir_net
   
   seq: 
     image: datalust/seq:latest
@@ -46,9 +52,13 @@ services:
       SEQ_FIRSTRUN_ADMINPASSWORD: "MyStrongPassword123!"
     volumes:
       - seq_data:/data
+    networks:
+      - sir_net
 
 volumes:
   rabbitmq_data:
   pgdata:
   pgadmin_data:
   seq_data:
+networks:
+  sir_net
