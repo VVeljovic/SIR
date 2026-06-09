@@ -8,17 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.1.0" />
-    <PackageReference Include="Npgsql" Version="8.0.3" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Producer.Application\Producer.Application.csproj" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.1.1" />
 	  <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.1" />
 	  <PackageReference Include="MassTransit" Version="8.1.1" />
   </ItemGroup>
