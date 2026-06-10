@@ -31,6 +31,11 @@ spec:
               configMapKeyRef:
                 name: producer-config-map
                 key: seq_host
+          - name: StreamDelay
+            valueFrom:
+              configMapKeyRef:
+                name: producer-config-map
+                key: stream_delay
           - name: RabbitMQ__Username
             valueFrom:
               secretKeyRef:
@@ -46,3 +51,11 @@ spec:
               configMapKeyRef:
                 name: producer-config-map
                 key: file_path
+          volumeMounts:
+            - name: csv-data
+              mountPath: /app/data
+      volumes:
+        - name: csv-data
+          hostPath:
+            path: /mnt/data
+            type: Directory

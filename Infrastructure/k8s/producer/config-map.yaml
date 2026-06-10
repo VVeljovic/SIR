@@ -6,3 +6,4 @@ data:
   rabbitmq_host: "host.minikube.internal"
   seq_host: "http://host.minikube.internal:5341/"
   file_path: "/app/data/US_Accidents_March23.csv"
+  stream_delay: "1000"

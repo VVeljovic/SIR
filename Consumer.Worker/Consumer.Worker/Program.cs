@@ -1,4 +1,7 @@
 using Consumer.Worker;
+using Consumer.Worker.Data;
+using Consumer.Worker.Data.Interfaces;
+using Consumer.Worker.Data.Repository;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Serilog; 
@@ -15,20 +18,13 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services.AddSerilog();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAccidentByStateRepository, AccidentByStateRepository>();
 
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<Worker>();
 
-    x.AddEntityFrameworkOutbox<ApplicationDbContext>(o =>
-    {
-        o.DuplicateDetectionWindow = TimeSpan.FromSeconds(3);
-        o.UsePostgres();
-        o.UseBusOutbox(cfg =>
-        {
-            cfg.MessageDeliveryLimit = 10; 
-        });
-    });
     x.UsingRabbitMq((context, cfg) =>
     {
         var rabbitHost = builder.Configuration["RabbitMq:Host"] ?? "localhost";
@@ -52,6 +48,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
     cfg.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
 }
 );
+
+
 var host = builder.Build();
 
 host.Run();

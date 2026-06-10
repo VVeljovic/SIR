@@ -1,8 +1,7 @@
-﻿using MassTransit;
+﻿using Microsoft.EntityFrameworkCore;
 using Producer.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
-namespace Consumer.Worker
+namespace Consumer.Worker.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -10,12 +9,15 @@ namespace Consumer.Worker
 
         public DbSet<AccidentRecord> AccidentRecords { get; set; }
 
+        public DbSet<AccidentByState> AccidentsByState { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-            modelBuilder.AddOutboxStateEntity();
-            modelBuilder.AddInboxStateEntity();
-            modelBuilder.AddOutboxMessageEntity();
+
+            modelBuilder.Entity<AccidentByState>()
+                .HasIndex(x => x.State)
+                .IsUnique();
         }
     }
 }

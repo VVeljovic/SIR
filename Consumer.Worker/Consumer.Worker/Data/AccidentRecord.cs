@@ -1,4 +1,5 @@
-﻿namespace Producer.Domain.Entities
+﻿
+namespace Producer.Domain.Entities
 {
     public sealed class AccidentRecord
     {

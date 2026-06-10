@@ -1,0 +1,5 @@
+docker build -t producer:latest C:/Users/Veljko/Desktop/SIR/Producer
+
+minikube image load producer:latest
+
+kubectl rollout restart deployment/producer-deployment
