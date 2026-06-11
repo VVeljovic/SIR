@@ -1,6 +1,4 @@
-﻿using Producer.Domain.Entities;
-
-namespace Producer.Application.Abstractions
+﻿namespace Producer.Application.Abstractions
 {
     public interface IAccidentStreamService
     {

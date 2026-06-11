@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Producer.Application.Abstractions;
 using Producer.Application.Mappings;
-using Producer.Domain.Entities;
+using Producer.Domain.Models;
 using System.Globalization;
 
 namespace Producer.Application.Implementations
@@ -20,16 +20,16 @@ namespace Producer.Application.Implementations
             using var reader = new StreamReader(filePath);
 
             using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
-            csvReader.Context.RegisterClassMap<AccidentRecordMap>();
+            csvReader.Context.RegisterClassMap<SensorReadingMap>();
 
-            await foreach (var record in csvReader.GetRecordsAsync<AccidentRecord>(cancellationToken))
+            await foreach (var record in csvReader.GetRecordsAsync<SensorReading>(cancellationToken))
             {
                 logger.LogInformation(
-                    "Accident {AccidentId} | Severity {Severity} | {State} | {City} sent to queue",
-                    record.Id,
-                    record.Severity,
-                    record.State,
-                    record.City);
+                    "SensorReading {timestamp} | Humidity {Severity} | {Device} | {Co} sent to queue",
+                    record.Timestamp,
+                    record.Humidity,
+                    record.Device,
+                    record.Co);
 
                 await messageSender.SendAsync(record, cancellationToken);
 
