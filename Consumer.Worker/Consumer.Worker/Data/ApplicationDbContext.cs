@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Producer.Domain.Entities;
+using Producer.Domain.Models;
 
 namespace Consumer.Worker.Data
 {
@@ -7,17 +7,13 @@ namespace Consumer.Worker.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<AccidentRecord> AccidentRecords { get; set; }
+        public DbSet<SensorReading> SensorReading { get; set; }
 
-        public DbSet<AccidentByState> AccidentsByState { get; set; }
-        
+        public DbSet<SensorStatsByDevice> SensorStatsByDevice { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-
-            modelBuilder.Entity<AccidentByState>()
-                .HasIndex(x => x.State)
-                .IsUnique();
         }
     }
 }

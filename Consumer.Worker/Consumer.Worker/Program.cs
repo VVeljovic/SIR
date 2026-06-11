@@ -19,7 +19,6 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Services.AddSerilog();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IAccidentByStateRepository, AccidentByStateRepository>();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -36,7 +35,7 @@ builder.Services.AddMassTransit(x =>
             h.Password(rabbitPass);
         });
 
-        cfg.ReceiveEndpoint("nov", x =>
+        cfg.ReceiveEndpoint("sensor-data", x =>
         {
             x.ConfigureConsumer<Worker>(context);
         });
