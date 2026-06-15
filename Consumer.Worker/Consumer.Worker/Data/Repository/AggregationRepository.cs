@@ -3,9 +3,9 @@ using Producer.Domain.Models;
 
 namespace Consumer.Worker.Data.Repository
 {
-    public class SensorStatsByDeviceRepository(ApplicationDbContext dbContext) : ISensorStatsByDeviceRepository
+    public class AggregationRepository(ApplicationDbContext dbContext) : IAggregationRepository
     {
-        public void Upsert(SensorReading reading)
+        public void UpsertStatsByDevice(SensorReading reading)
         {
             var existing = dbContext.SensorStatsByDevice
                 .Where(x => x.Device == reading.Device)
@@ -39,5 +39,29 @@ namespace Consumer.Worker.Data.Repository
 
         private static double UpdateAvg(double currentAvg, int newCount, double newValue)
         => (currentAvg * (newCount - 1) + newValue) / newCount;
+
+        public void UpsertStatsByHour(SensorReading reading)
+        {
+            var hour = reading.Timestamp.Hour; 
+
+            var existingStats = dbContext.SensorStatsByHour.Where(x => x.Hour == hour).FirstOrDefault();
+
+            if (existingStats is null)
+            {
+                dbContext.Add(new SensorStatsByHour
+                {
+                    Id = Guid.NewGuid(),
+                    Hour = hour,
+                    Count = 1,
+                    UpdatedAt = DateTime.UtcNow
+                });
+            }
+
+            else
+            {
+                existingStats.Count++;
+                existingStats.UpdatedAt = DateTime.UtcNow;
+            }
+        }
     }
 }

@@ -43,7 +43,7 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-builder.Services.AddScoped<ISensorStatsByDeviceRepository, SensorStatsByDeviceRepository>();
+builder.Services.AddScoped<IAggregationRepository, AggregationRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
 {

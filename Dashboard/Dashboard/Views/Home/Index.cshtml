@@ -1,0 +1,136 @@
+@model Dashboard.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "IoT senzori — analitički pregled";
+
+    var devices = Model.StatsByDevice.Select(x => x.Device).ToArray();
+    var temperatures = Model.StatsByDevice.Select(x => x.AvgTemperature).ToArray();
+    var humidities = Model.StatsByDevice.Select(x => Math.Round(x.AvgHumidity * 100, 1)).ToArray();
+    var coValues = Model.StatsByDevice.Select(x => x.AvgCo).ToArray();
+    var smokeValues = Model.StatsByDevice.Select(x => x.AvgSmoke).ToArray();
+    var hours = Model.StatsByHour.OrderBy(x => x.Hour).Select(x => x.Hour).ToArray();
+    var hourCounts = Model.StatsByHour.OrderBy(x => x.Hour).Select(x => x.Count).ToArray();
+
+    string ToJs<T>(IEnumerable<T> arr) => System.Text.Json.JsonSerializer.Serialize(arr);
+}
+
+<div class="mb-2">
+    <h4 class="mb-0">IoT senzori — analitički pregled</h4>
+    <small class="text-muted">@Model.StatsByDevice.Count uređaja · temperatura, vlažnost, CO, dim, LPG</small>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="border rounded p-3">
+            <div class="text-muted small">Ukupno merenja</div>
+            <div class="fs-3 fw-bold">@(Model.TotalMeasurements >= 1000000 ? $"{Model.TotalMeasurements / 1000000.0:F2}M" : Model.TotalMeasurements.ToString("N0"))</div>
+            <small class="text-success">Svi uređaji</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="border rounded p-3">
+            <div class="text-muted small">Prosečna temperatura</div>
+            <div class="fs-3 fw-bold">@Model.AvgTemperature°C</div>
+            <small class="text-muted">Svi uređaji</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="border rounded p-3">
+            <div class="text-muted small">Prosečna vlažnost</div>
+            <div class="fs-3 fw-bold">@Model.AvgHumidity%</div>
+            <small class="text-muted">Svi uređaji</small>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="border rounded p-3">
+            <div class="small fw-semibold mb-2">Prosečna temperatura po uređaju</div>
+            <canvas id="tempChart" height="140"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="border rounded p-3">
+            <div class="small fw-semibold mb-2">Prosečna vlažnost po uređaju</div>
+            <canvas id="humidityChart" height="140"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="border rounded p-3">
+            <div class="small fw-semibold mb-2">CO i Smoke po uređaju</div>
+            <canvas id="coSmokeChart" height="140"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="border rounded p-3">
+            <div class="small fw-semibold mb-2">Merenja po satu u danu</div>
+            <canvas id="hourChart" height="140"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const devices = @Html.Raw(ToJs(devices));
+    const colors = ['#5b6abf', '#4caf7d', '#e8a838'];
+
+    new Chart(document.getElementById('tempChart'), {
+        type: 'bar',
+        data: {
+            labels: devices,
+            datasets: [{
+                data: @Html.Raw(ToJs(temperatures)),
+                backgroundColor: colors.slice(0, devices.length),
+                borderRadius: 4
+            }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false } } }
+    });
+
+    new Chart(document.getElementById('humidityChart'), {
+        type: 'bar',
+        data: {
+            labels: devices,
+            datasets: [{
+                data: @Html.Raw(ToJs(humidities)),
+                backgroundColor: colors.slice(0, devices.length),
+                borderRadius: 4
+            }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false } } }
+    });
+
+    new Chart(document.getElementById('coSmokeChart'), {
+        type: 'bar',
+        data: {
+            labels: devices,
+            datasets: [
+                { label: 'CO', data: @Html.Raw(ToJs(coValues)), backgroundColor: '#e05c5c', borderRadius: 4 },
+                { label: 'Smoke', data: @Html.Raw(ToJs(smokeValues)), backgroundColor: '#e8a838', borderRadius: 4 }
+            ]
+        },
+        options: { plugins: { legend: { position: 'top' } } }
+    });
+
+    new Chart(document.getElementById('hourChart'), {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(ToJs(hours)),
+            datasets: [{
+                data: @Html.Raw(ToJs(hourCounts)),
+                borderColor: '#7986cb',
+                backgroundColor: 'rgba(121,134,203,0.15)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3
+            }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { x: { title: { display: false } } } }
+    });
+</script>
+}
