@@ -10,14 +10,21 @@ namespace Consumer.Worker
 
         public readonly IUnitOfWork _unitOfWork;
 
-        public Worker(ILogger<Worker> logger, IUnitOfWork unitOfWork)
+        public readonly ISensorStatsByDeviceRepository _sensorStatsByDeviceRepository;
+
+        public Worker(ILogger<Worker> logger,
+            ISensorStatsByDeviceRepository sensorStatsByDeviceRepository,
+            IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _sensorStatsByDeviceRepository = sensorStatsByDeviceRepository;
             _unitOfWork = unitOfWork;
         }
 
         public async Task Consume(ConsumeContext<SensorReading> context)
         {
+            _sensorStatsByDeviceRepository.Upsert(context.Message);
+            await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Processing reading: {sensor}", context.Message.Device);
         }
     }

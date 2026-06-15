@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: producer-deployment
+  name: consumer-deployment
   labels:
-    app: producer-deployment
+    app: consumer-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: producerapp
+      app: consumerapp
   template:
     metadata:
       labels:
-        app: producerapp
+        app: consumerapp
     spec:
       containers:
-        - name: producerapp
-          image: producer:latest
+        - name: consumerapp
+          image: consumer:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
@@ -24,30 +24,25 @@ spec:
           - name: RabbitMQ__Host
             valueFrom: 
               configMapKeyRef:
-                name: producer-config-map
+                name: consumer-config-map
                 key: rabbitmq_host
           - name: Seq__Url
             valueFrom:
               configMapKeyRef:
-                name: producer-config-map
+                name: consumer-config-map
                 key: seq_host
-          - name: StreamDelay
-            valueFrom:
-              configMapKeyRef:
-                name: producer-config-map
-                key: stream_delay
           - name: RabbitMQ__Username
             valueFrom:
               secretKeyRef:
-                name: producer-secret
+                name: consumer-secret
                 key: RabbitMQ__Username
           - name: RabbitMQ__Password
             valueFrom:
               secretKeyRef:
-                name: producer-secret
+                name: consumer-secret
                 key: RabbitMQ__Password
-          - name: FilePath
+          - name: ConnectionStrings__Database
             valueFrom:
               configMapKeyRef:
-                name: producer-config-map
-                key: file_path
+                name: consumer-config-map
+                key: connection_string

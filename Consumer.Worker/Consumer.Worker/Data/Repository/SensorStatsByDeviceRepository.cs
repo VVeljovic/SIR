@@ -1,8 +1,9 @@
-﻿using Producer.Domain.Models;
+﻿using Consumer.Worker.Data.Interfaces;
+using Producer.Domain.Models;
 
 namespace Consumer.Worker.Data.Repository
 {
-    public class SensorStatsByDeviceRepository(ApplicationDbContext dbContext)
+    public class SensorStatsByDeviceRepository(ApplicationDbContext dbContext) : ISensorStatsByDeviceRepository
     {
         public void Upsert(SensorReading reading)
         {
@@ -14,6 +15,7 @@ namespace Consumer.Worker.Data.Repository
             {
                 dbContext.SensorStatsByDevice.Add(new SensorStatsByDevice
                 {
+                    Id = Guid.NewGuid(),
                     Device = reading.Device,
                     Count = 1,
                     AvgTemperature = reading.Temperature,

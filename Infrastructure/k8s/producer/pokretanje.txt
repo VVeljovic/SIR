@@ -1,5 +1,23 @@
-docker build -t producer:latest C:/Users/Veljko/Desktop/SIR/Producer
+minikube docker-env | Invoke-Expression
 
-minikube image load producer:latest
+# 2. Rebuild image
+docker build -t producer:latest -f Producer/Dockerfile Producer/
 
-kubectl rollout restart deployment/producer-deployment
+# 3. Primijeni config
+kubectl apply -f Infrastructure/k8s/producer/config-map.yaml
+kubectl apply -f Infrastructure/k8s/producer/deployment.yaml
+
+# 4. Restart
+kubectl rollout restart deployment producer-deployment
+kubectl get pods -w
+
+
+# 1. Usmeri Docker na minikube
+minikube docker-env | Invoke-Expression
+
+# 2. Buildi consumer image
+docker build -t consumer:latest -f Consumer.Worker/Consumer.Worker/Dockerfile Consumer.Worker/Consumer.Worker/
+
+# 3. Provjeri
+kubectl rollout restart deployment consumer-deployment
+kubectl get pods -w

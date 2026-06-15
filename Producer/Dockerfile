@@ -18,4 +18,5 @@ RUN dotnet publish "Producer.Presentation/Producer.Presentation.csproj" -c Relea
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY ["iot_telemetry_data.csv", "/app/data/iot_telemetry_data.csv"]
 ENTRYPOINT ["dotnet", "Producer.Presentation.dll"]

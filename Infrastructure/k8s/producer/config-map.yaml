@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: producer-config-map
 data:
-  rabbitmq_host: "host.minikube.internal"
+  rabbitmq_host: "rabbitmq-service"
   seq_host: "http://host.minikube.internal:5341/"
-  file_path: "/app/data/US_Accidents_March23.csv"
+  file_path: "/app/data/iot_telemetry_data.csv"
   stream_delay: "1000"

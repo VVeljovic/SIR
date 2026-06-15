@@ -37,10 +37,13 @@ builder.Services.AddMassTransit(x =>
 
         cfg.ReceiveEndpoint("sensor-data", x =>
         {
+            x.ConcurrentMessageLimit = 1;
             x.ConfigureConsumer<Worker>(context);
         });
     });
 });
+
+builder.Services.AddScoped<ISensorStatsByDeviceRepository, SensorStatsByDeviceRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
 {

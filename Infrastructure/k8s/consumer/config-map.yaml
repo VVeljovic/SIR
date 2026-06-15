@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consumer-config-map
+data:
+  rabbitmq_host: "host.minikube.internal"
+  seq_host: "http://host.minikube.internal:5341/"
+  postgres_host: "host.minikube.internal"
+  connection_string: "Host=host.minikube.internal;Port=5433;Database=mydb;Username=postgres;Password=postgres"

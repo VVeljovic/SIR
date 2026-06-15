@@ -33,7 +33,7 @@ namespace Producer.Application.Implementations
 
                 await messageSender.SendAsync(record, cancellationToken);
 
-                await Task.Delay(streamDelay);
+                //await Task.Delay(streamDelay);
             }
         }
     }

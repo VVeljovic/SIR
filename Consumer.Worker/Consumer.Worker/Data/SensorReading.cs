@@ -2,7 +2,7 @@
 {
     public class SensorReading
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public DateTime Timestamp { get; set; }
         public string Device { get; set; }
         public double Co { get; set; }
