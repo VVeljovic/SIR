@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: producer-deployment
+  namespace: default
   labels:
     app: producer-deployment
 spec:
@@ -21,33 +22,37 @@ spec:
           ports:
             - containerPort: 8080
           env:
-          - name: RabbitMQ__Host
-            valueFrom: 
-              configMapKeyRef:
-                name: producer-config-map
-                key: rabbitmq_host
-          - name: Seq__Url
-            valueFrom:
-              configMapKeyRef:
-                name: producer-config-map
-                key: seq_host
-          - name: StreamDelay
-            valueFrom:
-              configMapKeyRef:
-                name: producer-config-map
-                key: stream_delay
-          - name: RabbitMQ__Username
-            valueFrom:
-              secretKeyRef:
-                name: producer-secret
-                key: RabbitMQ__Username
-          - name: RabbitMQ__Password
-            valueFrom:
-              secretKeyRef:
-                name: producer-secret
-                key: RabbitMQ__Password
-          - name: FilePath
-            valueFrom:
-              configMapKeyRef:
-                name: producer-config-map
-                key: file_path
+            - name: DOTNET_USE_POLLING_FILE_WATCHER
+              value: "true"
+            - name: Seq__ServerUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: producer-config-map
+                  key: seq_host
+            - name: AppSettings__FilePath
+              valueFrom:
+                configMapKeyRef:
+                  name: producer-config-map
+                  key: file_path
+            - name: RabbitMQ__Host
+              valueFrom:
+                secretKeyRef:
+                  name: producer-secret
+                  key: RabbitMQ__Host
+            - name: RabbitMQ__Username
+              valueFrom:
+                secretKeyRef:
+                  name: producer-secret
+                  key: RabbitMQ__Username
+            - name: RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name: producer-secret
+                  key: RabbitMQ__Password
+          volumeMounts:
+            - name: stream-config
+              mountPath: /config
+      volumes:
+        - name: stream-config
+          configMap:
+            name: stream-config

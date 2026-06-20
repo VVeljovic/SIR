@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Options;
 using Producer.Application;
+using Producer.Application.Settings;
 using Producer.Infrastructure;
 using Producer.Presentation.Middlewares;
 using Serilog;
@@ -13,6 +15,13 @@ builder.Host.UseSerilog((context, services, config) =>
     .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning);
 });
 // Add services to the container.
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("/config/appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stream-config
+data:
+  appsettings.json: |
+    {
+      "AppSettings" : {
+        "StreamDelay": 1500
+      }
+    }
