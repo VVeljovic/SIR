@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: producer-deployment
-  namespace: default
   labels:
     app: producer-deployment
 spec:

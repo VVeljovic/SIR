@@ -1,0 +1,16 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata: 
+  name: dashboard-scale
+spec:
+  scaleTargetRef:
+    name: dashboard-deployment
+  minReplicaCount: 1
+  maxReplicaCount: 10 
+  triggers: 
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        metricName: http_requests_total
+        query: sum(rate(http_requests_total{app="dashboardapp"}[1m]))
+        threshold: "10"

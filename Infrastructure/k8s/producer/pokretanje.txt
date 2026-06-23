@@ -2,6 +2,7 @@ minikube docker-env | Invoke-Expression
 
 # 2. Rebuild image
 docker build -t producer:latest -f Producer/Dockerfile Producer/
+docker build -t dashboard:latest C:/Users/Veljko/Desktop/SIR/Dashboard
 
 # 3. Primijeni config
 kubectl apply -f Infrastructure/k8s/producer/config-map.yaml
@@ -21,3 +22,9 @@ docker build -t consumer:latest -f Consumer.Worker/Consumer.Worker/Dockerfile Co
 # 3. Provjeri
 kubectl rollout restart deployment consumer-deployment
 kubectl get pods -w
+
+for ($i = 1; $i -le 50; $i++) { Invoke-WebRequest -Uri "http://localhost:8080" -UseBasicParsing | Out-Null; Write-Host $i }
+
+docker build -t dashboard:latest C:/Users/Veljko/Desktop/SIR/Dashboard
+minikube image load dashboard:latest --overwrite=true
+kubectl rollout restart deployment/dashboard-deployment
