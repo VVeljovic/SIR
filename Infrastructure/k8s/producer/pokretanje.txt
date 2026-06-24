@@ -28,3 +28,20 @@ for ($i = 1; $i -le 50; $i++) { Invoke-WebRequest -Uri "http://localhost:8080" -
 docker build -t dashboard:latest C:/Users/Veljko/Desktop/SIR/Dashboard
 minikube image load dashboard:latest --overwrite=true
 kubectl rollout restart deployment/dashboard-deployment
+
+
+kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring
+
+
+PS C:\Users\Veljko\Desktop\SIR> $encoded = kubectl get secret prometheus-grafana -n monitoring -o jsonpath="{.data.admin-password}"
+PS C:\Users\Veljko\Desktop\SIR> [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encoded))
+mbPv3n1H3w3EbOZ0QpkkKWJE2YDgd0xBYVggcTmh
+PS C:\Users\Veljko\Desktop\SIR> 
+
+kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n monitoring
+
+rate(http_requests_received_total{job="dashboard-service"}[1m])
+
+
+
+Invoke-WebRequest http://localhost:8080/).Content

@@ -31,6 +31,7 @@ app.UseAuthorization();
 app.UseHttpMetrics();
 
 app.MapMetrics();
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

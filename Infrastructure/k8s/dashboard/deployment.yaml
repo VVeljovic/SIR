@@ -20,12 +20,26 @@ spec:
           imagePullPolicy: Never
           ports: 
             - containerPort: 8080
-          env: 
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          env:
             - name: ConnectionStrings__Database
               valueFrom: 
                 configMapKeyRef:
                     name : dashboard-config-map
                     key: connection_string
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
 ---
 apiVersion: v1
 kind: Service
