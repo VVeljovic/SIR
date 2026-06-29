@@ -45,3 +45,9 @@ rate(http_requests_received_total{job="dashboard-service"}[1m])
 
 
 Invoke-WebRequest http://localhost:8080/).Content
+
+
+& minikube -p minikube docker-env --shell powershell | Invoke-Expression
+
+docker build -t dashboard:latest -f Dashboard/Dockerfile Dashboard/
+docker build -t consumer:latest -f Consumer.Worker/Consumer.Worker/Dockerfile Consumer.Worker/Consumer.Worker/
