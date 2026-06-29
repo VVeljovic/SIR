@@ -14,5 +14,10 @@ namespace Dashboard.Implementations
         {
             return dbContext.SensorStatsByHour.ToList();
         }
+
+        public List<SensorReading> GetAllReadings()
+        {
+            return dbContext.SensorReading.OrderBy(x => x.Timestamp).ToList();
+        }
     }
 }

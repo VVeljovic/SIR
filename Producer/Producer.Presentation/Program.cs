@@ -18,7 +18,7 @@ builder.Host.UseSerilog((context, services, config) =>
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("/config/appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("/config/appsettings.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));

@@ -14,9 +14,12 @@
     string ToJs<T>(IEnumerable<T> arr) => System.Text.Json.JsonSerializer.Serialize(arr);
 }
 
-<div class="mb-2">
-    <h4 class="mb-0">IoT senzori — analitički pregled</h4>
-    <small class="text-muted">@Model.StatsByDevice.Count uređaja · temperatura, vlažnost, CO, dim, LPG</small>
+<div class="mb-2 d-flex justify-content-between align-items-start">
+    <div>
+        <h4 class="mb-0">IoT senzori — analitički pregled</h4>
+        <small class="text-muted">@Model.StatsByDevice.Count uređaja · temperatura, vlažnost, CO, dim, LPG</small>
+    </div>
+    <a href="/api/report/export" class="btn btn-sm btn-outline-secondary">Preuzmi izveštaj</a>
 </div>
 
 <div class="row g-3 mb-4">

@@ -23,6 +23,7 @@ namespace Consumer.Worker
 
         public async Task Consume(ConsumeContext<SensorReading> context)
         {
+            _aggregationRepository.SaveReading(context.Message);
             _aggregationRepository.UpsertStatsByDevice(context.Message);
             _aggregationRepository.UpsertStatsByHour(context.Message);
 

@@ -37,6 +37,11 @@ namespace Consumer.Worker.Data.Repository
             }
         }
 
+        public void SaveReading(SensorReading reading)
+        {
+            dbContext.SensorReading.Add(reading);
+        }
+
         private static double UpdateAvg(double currentAvg, int newCount, double newValue)
         => (currentAvg * (newCount - 1) + newValue) / newCount;
 
