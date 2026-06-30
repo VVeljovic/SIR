@@ -6,6 +6,6 @@ data:
   appsettings.json: |
     {
       "AppSettings" : {
-        "StreamDelay": 1500
+        "StreamDelay": 1
       }
     }

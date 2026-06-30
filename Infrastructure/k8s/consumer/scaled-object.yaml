@@ -12,5 +12,6 @@ spec:
     metadata:
       queueName: "sensor-data"
       queueLength: "10"
-      host: amqp://user:password@rabbitmq-service.default.svc.cluster.local:5672
+    authenticationRef:
+      name: rabbitmq-trigger-auth
 
