@@ -51,3 +51,6 @@ Invoke-WebRequest http://localhost:8080/).Content
 
 docker build -t dashboard:latest -f Dashboard/Dockerfile Dashboard/
 docker build -t consumer:latest -f Consumer.Worker/Consumer.Worker/Dockerfile Consumer.Worker/Consumer.Worker/
+
+
+PS C:\Users\Veljko\Desktop\SIR> kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
