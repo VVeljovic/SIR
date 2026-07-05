@@ -4,6 +4,6 @@ metadata:
   name: consumer-config-map
 data:
   rabbitmq_host: "rabbitmq-service"
-  seq_host: "http://host.minikube.internal:5341/"
-  postgres_host: "host.minikube.internal"
-  connection_string: "Host=host.minikube.internal;Port=5433;Database=mydb;Username=postgres;Password=postgres"
+  seq_host: "http://seq-service:5341/"
+  postgres_host: "postgres"
+  connection_string: "Host=postgres;Port=5433;Database=mydb;Username=postgres;Password=postgres"

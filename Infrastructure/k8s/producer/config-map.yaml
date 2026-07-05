@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: producer-config-map
 data:
-  seq_host: "http://host.minikube.internal:5341/"
+  seq_host: "http://seq-service:5341/"
   file_path: "/app/data/iot_telemetry_data.csv"
