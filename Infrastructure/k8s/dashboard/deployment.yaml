@@ -5,7 +5,7 @@ metadata:
   labels:
     app: dashboard-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector: 
     matchLabels:
       app: dashboardapp
@@ -22,31 +22,17 @@ spec:
             - containerPort: 8080
           env:
             - name: ConnectionStrings__Database
-              valueFrom: 
-                configMapKeyRef:
-                    name : dashboard-config-map
-                    key: connection_string
+              valueFrom:
+                secretKeyRef:
+                  name: dashboard-secret
+                  key: ConnectionStrings__Database
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "256Mi"
             limits:
               cpu: "500m"
-              memory: "256Mi"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 15
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            failureThreshold: 3
+              memory: "1Gi"
 ---
 apiVersion: v1
 kind: Service

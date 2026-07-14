@@ -5,3 +5,6 @@ metadata:
 data:
   seq_host: "http://seq-service:5341/"
   file_path: "/app/data/iot_telemetry_data.csv"
+  
+
+  

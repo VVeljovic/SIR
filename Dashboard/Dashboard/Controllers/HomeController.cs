@@ -16,10 +16,10 @@ namespace Dashboard.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var statsByDevice = _repository.GetSensorStatsByDevice();
-            var statsByHour = _repository.GetSensorStatsByHours();
+            var statsByDevice = await _repository.GetSensorStatsByDeviceAsync();
+            var statsByHour = await _repository.GetSensorStatsByHoursAsync();
 
             var model = new DashboardViewModel
             {
@@ -37,6 +37,9 @@ namespace Dashboard.Controllers
         {
             return View();
         }
+
+        [HttpGet("/health")]
+        public IActionResult Health() => Ok("healthy");
 
         [HttpGet("/api/cpu-stress")]
         public IActionResult CpuStress()

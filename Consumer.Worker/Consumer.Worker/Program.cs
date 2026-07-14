@@ -54,4 +54,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
 
 var host = builder.Build();
 
+using (var scope = host.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.EnsureCreated();
+}
+
 host.Run();

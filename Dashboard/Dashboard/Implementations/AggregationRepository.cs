@@ -1,23 +1,22 @@
-﻿using Dashboard.Data;
+using Dashboard.Data;
 using Dashboard.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dashboard.Implementations
 {
     public class AggregationRepository(ApplicationDbContext dbContext) : IAggregationRepository
     {
-        public List<SensorStatsByDevice> GetSensorStatsByDevice()
-        {
-            return dbContext.SensorStatsByDevice.ToList();
-        }
+        public Task<List<SensorStatsByDevice>> GetSensorStatsByDeviceAsync()
+            => dbContext.SensorStatsByDevice.ToListAsync();
 
-        public List<SensorStatsByHour> GetSensorStatsByHours()
-        {
-            return dbContext.SensorStatsByHour.ToList();
-        }
+        public Task<List<SensorStatsByHour>> GetSensorStatsByHoursAsync()
+            => dbContext.SensorStatsByHour.ToListAsync();
 
-        public List<SensorReading> GetAllReadings()
-        {
-            return dbContext.SensorReading.OrderBy(x => x.Timestamp).ToList();
-        }
+        public Task<List<SensorReading>> GetAllReadingsAsync()
+            => dbContext.SensorReading
+                .OrderByDescending(x => x.Timestamp)
+                .Take(3000)
+                .OrderBy(x => x.Timestamp)
+                .ToListAsync();
     }
 }

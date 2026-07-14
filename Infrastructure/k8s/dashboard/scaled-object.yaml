@@ -8,7 +8,7 @@ spec:
     kind: Deployment
     name: dashboard-deployment
   updatePolicy:
-    updateMode: "Recreate"
+    updateMode: "InPlaceOrRecreate"
   resourcePolicy:
     containerPolicies:
     - containerName: "dashboardapp"
@@ -22,3 +22,13 @@ spec:
       - cpu
       - memory
       controlledValues: RequestsAndLimits
+
+
+
+
+
+      
+
+
+
+      

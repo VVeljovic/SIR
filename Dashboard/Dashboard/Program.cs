@@ -14,6 +14,12 @@ builder.Services.AddScoped<IAggregationRepository, AggregationRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.ExecuteSqlRaw(@"CREATE INDEX IF NOT EXISTS idx_sensor_reading_timestamp ON ""SensorReading"" (""Timestamp"" DESC)");
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -22,7 +28,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

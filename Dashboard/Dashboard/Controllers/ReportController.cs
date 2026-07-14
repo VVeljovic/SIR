@@ -9,11 +9,11 @@ namespace Dashboard.Controllers
     public class ReportController(IAggregationRepository repository) : ControllerBase
     {
         [HttpGet("export")]
-        public IActionResult Export()
+        public async Task<IActionResult> Export()
         {
-            var readings = repository.GetAllReadings();
-            var statsByDevice = repository.GetSensorStatsByDevice();
-            var statsByHour = repository.GetSensorStatsByHours();
+            var readings = await repository.GetAllReadingsAsync();
+            var statsByDevice = await repository.GetSensorStatsByDeviceAsync();
+            var statsByHour = await repository.GetSensorStatsByHoursAsync();
 
             using var workbook = new XLWorkbook();
 

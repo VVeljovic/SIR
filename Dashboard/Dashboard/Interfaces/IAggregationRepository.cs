@@ -1,11 +1,11 @@
-﻿using Dashboard.Data;
+using Dashboard.Data;
 
 namespace Dashboard.Interfaces
 {
     public interface IAggregationRepository
     {
-        public List<SensorStatsByDevice> GetSensorStatsByDevice();
-        public List<SensorStatsByHour> GetSensorStatsByHours();
-        public List<SensorReading> GetAllReadings();
+        Task<List<SensorStatsByDevice>> GetSensorStatsByDeviceAsync();
+        Task<List<SensorStatsByHour>> GetSensorStatsByHoursAsync();
+        Task<List<SensorReading>> GetAllReadingsAsync();
     }
 }

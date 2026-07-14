@@ -43,6 +43,10 @@ spec:
                 key: RabbitMQ__Password
           - name: ConnectionStrings__Database
             valueFrom:
-              configMapKeyRef:
-                name: consumer-config-map
-                key: connection_string
+              secretKeyRef:
+                name: consumer-secret
+                key: ConnectionStrings__Database
+
+
+
+                

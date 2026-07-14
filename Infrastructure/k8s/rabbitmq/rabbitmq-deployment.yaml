@@ -38,3 +38,7 @@ spec:
     - name: management
       port: 15672
   type: ClusterIP
+
+
+
+  
