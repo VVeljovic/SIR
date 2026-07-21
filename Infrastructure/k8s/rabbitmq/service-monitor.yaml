@@ -1,0 +1,14 @@
+﻿apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rabbitmq-exporter
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      release: rabbitmq-exporter
+  endpoints:
+  - port: rabbitmq-exporter
+    interval: 15s

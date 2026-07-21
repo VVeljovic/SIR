@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata: 
   name: rabbitmq-deployment
@@ -23,7 +23,6 @@ spec:
                 value: user
               - name: RABBITMQ_DEFAULT_PASS
                 value: password
-
 ---
 apiVersion: v1
 kind: Service
@@ -38,7 +37,3 @@ spec:
     - name: management
       port: 15672
   type: ClusterIP
-
-
-
-  

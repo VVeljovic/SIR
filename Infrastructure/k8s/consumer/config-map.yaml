@@ -1,12 +1,7 @@
-apiVersion: v1
+﻿apiVersion: v1
 kind: ConfigMap
 metadata:
   name: consumer-config-map
 data:
   rabbitmq_host: "rabbitmq-service"
   seq_host: "http://seq-service:5341/"
-
-
-
-
-  

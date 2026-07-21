@@ -1,4 +1,4 @@
-apiVersion: autoscaling.k8s.io/v1
+﻿apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
   name: dashboard-vpa
@@ -22,13 +22,3 @@ spec:
       - cpu
       - memory
       controlledValues: RequestsAndLimits
-
-
-
-
-
-      
-
-
-
-      

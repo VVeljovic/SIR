@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: StatefulSet
 metadata: 
   name: postgres
@@ -48,7 +48,6 @@ spec:
           requests:
             storage: 1Gi
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -64,7 +63,3 @@ spec:
      port: 5433
      targetPort: 5432
      name: postgres
-
-
-
-     

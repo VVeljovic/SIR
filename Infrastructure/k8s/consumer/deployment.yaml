@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: consumer-deployment
@@ -46,7 +46,3 @@ spec:
               secretKeyRef:
                 name: consumer-secret
                 key: ConnectionStrings__Database
-
-
-
-                

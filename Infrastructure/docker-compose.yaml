@@ -1,4 +1,4 @@
-services:
+﻿services:
   message-broker:
     image: rabbitmq:3-management
     container_name: message-broker
@@ -12,7 +12,6 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - sir_net
-  
   db:
     image: postgres:15-alpine
     environment:
@@ -25,7 +24,6 @@ services:
       - "5433:5432"
     networks:
       - sir_net
-
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin_container
@@ -41,7 +39,6 @@ services:
       - db
     networks:
       - sir_net
-  
   seq: 
     image: datalust/seq:latest
     container_name: seq
@@ -54,7 +51,6 @@ services:
       - seq_data:/data
     networks:
       - sir_net
-
 volumes:
   rabbitmq_data:
   pgdata:

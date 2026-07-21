@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seq-deployment
@@ -38,5 +38,3 @@ spec:
     - name: ingestion
       port: 5341
       targetPort: 5341
-
-
